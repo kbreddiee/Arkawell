@@ -6,9 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Required for static export
   },
-  // If deploying to username.github.io/repo-name, uncomment and set:
-  // basePath: '/arkawell-site',
-  // trailingSlash: true,
+  // Base path for GitHub Pages (repository name)
+  basePath: '/Arkawell',
+  trailingSlash: true,
 };
 
 export default nextConfig;
