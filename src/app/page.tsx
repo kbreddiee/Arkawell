@@ -190,6 +190,16 @@ const Card = ({
 // Main Home Component
 export default function Home() {
   const [activeApp, setActiveApp] = useState(0)
+  const [formState, setFormState] = useState<{
+    loading: boolean;
+    success: boolean;
+    error: string | null;
+  }>({
+    loading: false,
+    success: false,
+    error: null,
+  });
+  const formRef = useRef<HTMLFormElement>(null);
 
   const apps = [
     { name: "Analytics Dashboard" },
@@ -397,26 +407,143 @@ export default function Home() {
                 </p>
               </motion.div>
 
-              <motion.div
+              <motion.form
+                ref={formRef}
                 variants={fadeUp}
                 className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-14 shadow-2xl border border-black/10"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setFormState({ loading: true, success: false, error: null });
+                  
+                  // Get values directly from form elements
+                  const form = e.currentTarget;
+                  const nameInput = form.querySelector('[name="entry.1437158386"]') as HTMLInputElement;
+                  const emailInput = form.querySelector('[name="entry.1039381460"]') as HTMLInputElement;
+                  const projectInput = form.querySelector('[name="entry.27566977"]') as HTMLTextAreaElement;
+                  
+                  const name = nameInput?.value?.trim() || '';
+                  const email = emailInput?.value?.trim() || '';
+                  const project = projectInput?.value?.trim() || '';
+                  
+                  if (!name || !email || !project) {
+                    setFormState({
+                      loading: false,
+                      success: false,
+                      error: 'Please fill in all fields.',
+                    });
+                    return;
+                  }
+                  
+                  // Create a temporary form element and submit it
+                  const tempForm = document.createElement('form');
+                  tempForm.method = 'POST';
+                  tempForm.action = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeIydgsTT1lczXV_GkuIZxAQ12wgeykAZkhWOARA6Pp0vOf6Q/formResponse';
+                  tempForm.target = '_blank';
+                  tempForm.style.display = 'none';
+                  
+                  // Helper to add hidden input
+                  const addInput = (name: string, value: string) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = value;
+                    tempForm.appendChild(input);
+                  };
+                  
+                  // Get current timestamp
+                  const timestamp = Date.now();
+                  
+                  // Add all form fields with CORRECT entry IDs
+                  addInput('entry.1437158386', name);
+                  addInput('entry.1039381460', email);
+                  addInput('entry.27566977', project);
+                  addInput('fvv', '1');
+                  addInput('partialResponse', '[null,null,"-8133584164002413601"]');
+                  addInput('pageHistory', '0');
+                  addInput('fbzx', '-8133584164002413601');
+                  addInput('submissionTimestamp', timestamp.toString());
+                  
+                  // Append to body and submit
+                  document.body.appendChild(tempForm);
+                  tempForm.submit();
+                  document.body.removeChild(tempForm);
+                  
+                  // Show success and reset
+                  setFormState({ loading: false, success: true, error: null });
+                  formRef.current?.reset();
+                  
+                  setTimeout(() => {
+                    setFormState({ loading: false, success: false, error: null });
+                  }, 5000);
+                }}
               >
+
                 <div className="grid gap-6 sm:gap-8">
-                  <div className="text-center">
-                    <p className="text-sm sm:text-base text-black/70 mb-6">
-                      Click the button below to fill out our contact form
-                    </p>
-                    <a
-                      href={process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full bg-black text-white px-8 sm:px-10 py-4 sm:py-5 text-sm font-bold uppercase tracking-wide hover:bg-black/90 transition-colors touch-manipulation"
-                    >
-                      Open Contact Form
-                    </a>
+                  {formState.success && (
+                    <div className="rounded-xl bg-green-50 border-2 border-green-200 p-4 text-green-800 text-sm">
+                      ✓ Thank you! Your response has been submitted successfully.
+                    </div>
+                  )}
+                  {formState.error && (
+                    <div className="rounded-xl bg-red-50 border-2 border-red-200 p-4 text-red-800 text-sm">
+                      ✗ {formState.error}
+                    </div>
+                  )}
+
+                  {/* Name Field */}
+                  <div className="grid gap-3">
+                    <label htmlFor="entry_1437158386" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                      Name
+                    </label>
+                    <input
+                      id="entry_1437158386"
+                      name="entry.1437158386"
+                      type="text"
+                      required
+                      placeholder="Your answer"
+                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                    />
                   </div>
+
+                  {/* Email Field */}
+                  <div className="grid gap-3">
+                    <label htmlFor="entry_1039381460" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                      Email
+                    </label>
+                    <input
+                      id="entry_1039381460"
+                      name="entry.1039381460"
+                      type="email"
+                      required
+                      placeholder="Your answer"
+                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                    />
+                  </div>
+
+                  {/* Project Idea Field */}
+                  <div className="grid gap-3">
+                    <label htmlFor="entry_27566977" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                      Project Idea
+                    </label>
+                    <textarea
+                      id="entry_27566977"
+                      name="entry.27566977"
+                      rows={6}
+                      required
+                      placeholder="Your answer"
+                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 resize-none transition-all"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    className="mt-2 inline-flex items-center justify-center rounded-full bg-black text-white px-8 sm:px-10 py-4 sm:py-5 text-sm font-bold uppercase tracking-wide hover:bg-black/90 transition-colors touch-manipulation"
+                  >
+                    Submit
+                  </button>
                 </div>
-              </motion.div>
+              </motion.form>
             </motion.div>
           </div>
         </section>
