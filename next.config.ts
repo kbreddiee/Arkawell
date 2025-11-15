@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
   // Base path for GitHub Pages (only in production builds)
   // In dev mode, basePath is empty so localhost works correctly
   basePath: isProduction ? '/Arkawell' : '',
+  assetPrefix: isProduction ? '/Arkawell' : '',
   trailingSlash: true,
 };
 
