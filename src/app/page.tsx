@@ -567,7 +567,7 @@ export default function Home() {
             {/* Company Info */}
             <div className="space-y-4 sm:space-y-6">
               <Image
-                src={`${process.env.NODE_ENV === 'production' ? '/Arkawell' : ''}/arkawell-logo-light.png`}
+                src="/arkawell-logo-light.png"
                 alt="Arkawell logo"
                 width={140}
                 height={48}

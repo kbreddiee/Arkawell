@@ -86,7 +86,7 @@ export default function Navigation() {
 
             <Link href="#home" className="hover:opacity-80 transition-opacity">
               <Image
-                src={`${process.env.NODE_ENV === 'production' ? '/Arkawell' : ''}/arkawell-logo-dark.png`}
+                src="/arkawell-logo-dark.png"
                 alt="Arkawell"
                 width={160}
                 height={48}
