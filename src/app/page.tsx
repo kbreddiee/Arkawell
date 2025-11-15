@@ -397,63 +397,26 @@ export default function Home() {
                 </p>
               </motion.div>
 
-              <motion.form
+              <motion.div
                 variants={fadeUp}
                 className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-14 shadow-2xl border border-black/10"
-                method="post"
-                action="https://formspree.io/f/YOUR_FORM_ID"
               >
                 <div className="grid gap-6 sm:gap-8">
-                  <div className="grid gap-3">
-                    <label htmlFor="name" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      placeholder="Your name"
-                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label htmlFor="email" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="you@company.com"
-                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <label
-                      htmlFor="project"
-                      className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black"
+                  <div className="text-center">
+                    <p className="text-sm sm:text-base text-black/70 mb-6">
+                      Click the button below to fill out our contact form
+                    </p>
+                    <a
+                      href={process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-full bg-black text-white px-8 sm:px-10 py-4 sm:py-5 text-sm font-bold uppercase tracking-wide hover:bg-black/90 transition-colors touch-manipulation"
                     >
-                      Project Idea
-                    </label>
-                    <textarea
-                      id="project"
-                      name="project"
-                      rows={6}
-                      placeholder="Tell us about your app idea..."
-                      className="rounded-xl border-2 border-black/20 bg-white px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20 resize-none transition-all"
-                      required
-                    />
+                      Open Contact Form
+                    </a>
                   </div>
-                  <button
-                    type="submit"
-                    className="mt-2 inline-flex items-center justify-center rounded-full bg-black text-white px-8 sm:px-10 py-4 sm:py-5 text-sm font-bold uppercase tracking-wide hover:bg-black/90 transition-colors touch-manipulation"
-                  >
-                    Submit
-                  </button>
                 </div>
-              </motion.form>
+              </motion.div>
             </motion.div>
           </div>
         </section>

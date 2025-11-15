@@ -31,8 +31,8 @@ export default function Navigation() {
   return (
     <header className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-4 md:px-6">
       <div className="max-w-7xl mx-auto bg-white/70 backdrop-blur-xl shadow-lg border border-white/20 rounded-3xl">
-        <div className="flex h-16 items-center justify-between gap-4 px-4 md:px-6">
-          {/* Left side */}
+        <div className="relative flex h-16 items-center justify-between gap-4 px-4 md:px-6">
+          {/* Left side - Logo */}
           <div className="flex items-center gap-2">
             {/* Mobile menu trigger */}
             <Popover>
@@ -84,40 +84,37 @@ export default function Navigation() {
               </PopoverContent>
             </Popover>
 
-            {/* Main nav */}
-            <div className="flex items-center gap-6">
-              <Link href="#home" className="hover:opacity-80 transition-opacity">
-                <Image
-                  src="/arkawell-logo-dark.png"
-                  alt="Arkawell"
-                  width={160}
-                  height={48}
-                  className="h-10 sm:h-12 w-auto"
-                  priority
-                />
-              </Link>
+            <Link href="#home" className="hover:opacity-80 transition-opacity">
+              <Image
+                src="/arkawell-logo-dark.png"
+                alt="Arkawell"
+                width={160}
+                height={48}
+                className="h-10 sm:h-12 w-auto"
+                priority
+              />
+            </Link>
+          </div>
 
-              {/* Desktop Navigation menu */}
-              <div className="max-md:hidden">
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    {navigationLinks.map((link, index) => (
-                      <NavigationMenuItem key={index}>
-                        <NavigationMenuLink asChild>
-                          <a
-                            href={link.href}
-                            className="text-black/60 hover:text-black py-1.5 px-3 font-medium text-sm transition-colors"
-                          >
-                            {link.label}
-                          </a>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    ))}
-                  </NavigationMenuList>
-                  <NavigationMenuViewport />
-                </NavigationMenu>
-              </div>
-            </div>
+          {/* Center - Desktop Navigation menu */}
+          <div className="absolute left-1/2 -translate-x-1/2 max-md:hidden">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {navigationLinks.map((link, index) => (
+                  <NavigationMenuItem key={index}>
+                    <NavigationMenuLink asChild>
+                      <a
+                        href={link.href}
+                        className="text-black/60 hover:text-black py-1.5 px-3 font-medium text-sm transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+              <NavigationMenuViewport />
+            </NavigationMenu>
           </div>
 
           {/* Right side - Contact Button */}

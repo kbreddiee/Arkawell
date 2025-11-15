@@ -24,11 +24,64 @@ git branch -M main
 git push -u origin main
 ```
 
-## Step 3: Deploy to Vercel (Recommended for Next.js)
+## Step 3: Deploy to GitHub Pages
+
+Your Next.js app is configured for static export, so it can be deployed to GitHub Pages!
+
+### Option A: Deploy to GitHub Pages (Free, Simple)
+
+1. **Build your site locally:**
+   ```bash
+   npm run build
+   ```
+   This creates an `out` folder with static files.
+
+2. **Push to GitHub** (if you haven't already):
+   ```bash
+   git add .
+   git commit -m "Configure for GitHub Pages"
+   git push origin main
+   ```
+
+3. **Enable GitHub Pages:**
+   - Go to your repository on GitHub
+   - Click **Settings** → **Pages** (left sidebar)
+   - Under **Source**, select **GitHub Actions**
+   - Create a workflow file (see below)
+
+4. **GitHub Actions workflow is already created:**
+   The file `.github/workflows/deploy.yml` is already set up! It will:
+   - Build your site on every push to `main`
+   - Deploy to GitHub Pages automatically
+   - Use environment variables from GitHub Secrets
+
+5. **For custom domain:**
+   - If deploying to `username.github.io/repo-name`, update `next.config.ts`:
+     ```typescript
+     basePath: '/arkawell-site',
+     trailingSlash: true,
+     ```
+   - If using a custom domain (e.g., `arkawell.com`), no basePath needed
+
+6. **Set environment variable in GitHub:**
+   - Go to your repository → **Settings** → **Secrets and variables** → **Actions**
+   - Click **New repository secret**
+   - Name: `NEXT_PUBLIC_GOOGLE_FORM_URL`
+   - Value: Your Google Form URL (e.g., `https://forms.gle/your-form-id`)
+   - Click **Add secret**
+   
+   The workflow will automatically use this secret when building.
+
+**Your site will be live at:**
+- `https://YOUR_USERNAME.github.io/arkawell-site` (if using subdirectory)
+- `https://YOUR_USERNAME.github.io` (if repo is named `username.github.io`)
+- Your custom domain (if configured)
+
+### Option B: Deploy to Vercel (Recommended for Next.js)
 
 Vercel is the best platform for Next.js apps - it's free and supports custom domains.
 
-### Option A: Deploy via Vercel Dashboard
+#### Deploy via Vercel Dashboard
 
 1. Go to [Vercel](https://vercel.com) and sign up/login (you can use GitHub to sign in)
 2. Click **Add New Project**
@@ -96,12 +149,52 @@ Vercel will show you DNS records to add. You need to add these at your domain re
 - Vercel will show "Valid Configuration" when DNS is ready
 - Your site will automatically use HTTPS (SSL certificate is free)
 
-## Step 5: Environment Variables (If Needed)
+## Step 5: Set Up Google Forms Contact Form
 
-If you add environment variables later:
-1. Go to Vercel project → **Settings** → **Environment Variables**
-2. Add your variables
-3. Redeploy (or they'll be added on next deployment)
+Your Contact Us form redirects to a Google Form. The form URL is stored securely in environment variables (not exposed in code).
+
+### Create Your Google Form:
+
+1. Go to [Google Forms](https://forms.google.com)
+2. Click **Blank** to create a new form
+3. Add these fields (matching your site's form):
+   - **Name** (Short answer, required)
+   - **Email** (Short answer, required)
+   - **Project Idea** (Paragraph, required)
+4. Click the **Send** button (top right)
+5. Click the **Link** icon
+6. Copy the form URL (looks like: `https://forms.gle/xxxxxxxxxx`)
+
+### Set Up Environment Variable:
+
+**For Local Development:**
+1. Create a file named `.env.local` in the root of your project
+2. Add this line (replace with your actual Google Form URL):
+   ```
+   NEXT_PUBLIC_GOOGLE_FORM_URL=https://forms.gle/your-actual-form-id
+   ```
+3. Restart your development server
+
+**For Production (Vercel/Netlify):**
+1. Go to your project dashboard → **Settings** → **Environment Variables**
+2. Add a new variable:
+   - **Name:** `NEXT_PUBLIC_GOOGLE_FORM_URL`
+   - **Value:** `https://forms.gle/your-actual-form-id`
+3. Redeploy your site
+
+**Important:** 
+- Never commit `.env.local` to GitHub (it's already in `.gitignore`)
+- The `.env.example` file shows the format but doesn't contain your actual URL
+- Use `NEXT_PUBLIC_` prefix so the variable is available in the browser
+
+### Optional: Customize Google Form
+
+- Add your logo/branding
+- Customize colors to match your site
+- Set up email notifications in Google Forms settings
+- Responses will be saved in a Google Sheet automatically
+
+That's it! When users click "Open Contact Form", they'll be taken to your Google Form.
 
 ## Alternative: Deploy to Netlify
 
@@ -138,4 +231,6 @@ After deployment:
 - ✅ Set up automatic deployments (already enabled by default)
 - ✅ Add analytics if needed
 - ✅ Configure redirects if needed (in Vercel/Netlify settings)
+
+
 
