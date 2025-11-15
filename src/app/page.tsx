@@ -407,6 +407,24 @@ export default function Home() {
                 </p>
               </motion.div>
 
+              {/* Hidden iframe to receive form submission */}
+              <iframe 
+                name="hidden_iframe" 
+                id="hidden_iframe" 
+                className="hidden" 
+                title="hidden"
+                onLoad={() => {
+                  // When iframe loads, form was submitted successfully
+                  setFormState({ loading: false, success: true, error: null });
+                  setTimeout(() => {
+                    formRef.current?.reset();
+                  }, 500);
+                  setTimeout(() => {
+                    setFormState({ loading: false, success: false, error: null });
+                  }, 5000);
+                }}
+              ></iframe>
+              
               <motion.form
                 ref={formRef}
                 variants={fadeUp}
@@ -434,11 +452,11 @@ export default function Home() {
                     return;
                   }
                   
-                  // Create a temporary form element and submit it
+                  // Create a temporary form element and submit it to hidden iframe
                   const tempForm = document.createElement('form');
                   tempForm.method = 'POST';
                   tempForm.action = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeIydgsTT1lczXV_GkuIZxAQ12wgeykAZkhWOARA6Pp0vOf6Q/formResponse';
-                  tempForm.target = '_blank';
+                  tempForm.target = 'hidden_iframe';
                   tempForm.style.display = 'none';
                   
                   // Helper to add hidden input
@@ -467,14 +485,6 @@ export default function Home() {
                   document.body.appendChild(tempForm);
                   tempForm.submit();
                   document.body.removeChild(tempForm);
-                  
-                  // Show success and reset
-                  setFormState({ loading: false, success: true, error: null });
-                  formRef.current?.reset();
-                  
-                  setTimeout(() => {
-                    setFormState({ loading: false, success: false, error: null });
-                  }, 5000);
                 }}
               >
 
