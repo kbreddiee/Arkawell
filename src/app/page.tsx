@@ -61,6 +61,11 @@ const services = [
 // Testimonials Data
 const testimonials = [
   {
+    quote: "Working with Arkawell has been a game-changer for our operation. Their customized accounting software is easily the most reliable and intuitive. We now have real-time visibility into machine performance, payouts, and financial reporting—all in one streamlined system. The level of accuracy and automation has drastically reduced manual errors, improved compliance, and saved countless hours each week. His ongoing support is equally impressive—responsive, knowledgeable, and truly invested in helping us succeed. We highly recommend this consulting firm to anyone looking for innovative and customized software solutions that drive performance and precision.",
+    author: "Nishant Modi",
+    role: "FESS Trading Inc",
+  },
+  {
     quote: "Arkawell turned our sketch into a working app in two weeks — amazing!",
     author: "Client Name",
     role: "Founder",
